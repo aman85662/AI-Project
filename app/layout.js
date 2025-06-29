@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
           {children}
           </main>
 
-          <footer className="bg-muted/50 py-12">
+          <footer className="bg-muted/50 py-12 my-4">
             <div className="container mx-auto px-4 text-center text-grey-200">
               <p>
                 Made with love by me 
