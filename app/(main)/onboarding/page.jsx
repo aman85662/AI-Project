@@ -2,6 +2,7 @@ import { industries } from '@/data/industries';
 import { getUserOnboardingStatus } from '@/actions/user';
 import React from 'react'
 import { redirect } from 'next/navigation';
+import OnboardingForm from './_components/onboarding-form';
 
 const onboardingPage = async() => {
   
@@ -12,7 +13,7 @@ const onboardingPage = async() => {
    }
 
   return (
-   <main><onboardingform industries ={industries} /></main>
+   <main><OnboardingForm industries ={industries} /></main>
   )
 }
 
