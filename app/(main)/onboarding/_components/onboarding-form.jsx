@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OnboardingSchema } from "../../../lib/schema.js";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import {  useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -12,6 +12,8 @@ import { Textarea } from "@/components/ui/textarea.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import useFetch from "@/hooks/use-fetch.js";
 import { UpdateUser } from "@/actions/user.js";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const OnboardingForm = ({ industries }) => {
   const [selectedIndustry, setSelectedIndustry] = useState(null);
@@ -29,12 +31,20 @@ const OnboardingForm = ({ industries }) => {
      const formattedIndustry = `${values.industry}-${values.industry.toLowerCase().replace(/ /g, "-")}`; 
      await updateUserfn({
        ...values,
-       indusrty:formattedIndustry, 
+       industry: formattedIndustry,
      })
    } catch (error) {
-    
+    console.error("Error updating user profile:", error);
    }
   };
+
+  useEffect(() => { 
+    if(updateResult?.success && !updateLoading) {
+      toast.success("Profile updated successfully!");
+      router.push("/dashboard");
+      router.refresh();
+    }
+   }, [updateResult, updateLoading]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -137,7 +147,12 @@ const OnboardingForm = ({ industries }) => {
                 <p className="text-sm text-red-500">{errors.bio.message}</p>
               )}
             </div>
-            <Button type="submit" className="w-full">Complete Profile</Button>
+            <Button type="submit" className="w-full" disabled={updateLoading} >
+              {updateLoading ? (<>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>):("Complete Profile")}
+            </Button>
           </form>
         </CardContent>
       </Card>
