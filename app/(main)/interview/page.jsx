@@ -1,8 +1,25 @@
-import React from 'react'
+import { getAssesments } from "@/actions/interview"
+import Statscards from "./_components/stat-card";
+import PerformanceChart from "./_components/performance-chart";
+import QuizList from "./_components/quiz-list";
 
-const Interviewpage = () => {
-  return (
-    <div>Interviewpage</div>
+ const Interviewpage = async () => {
+   const assesment = await getAssesments();
+   
+   return (
+    <div>
+      <h1 className="text-6xl font-bold text-center mb-10 gradient-title">
+        Interview Prepration
+      </h1>
+
+
+      <div>
+         <Statscards assesments={assesment} />
+         <PerformanceChart assesments={assesment} />
+           <QuizList assesments = {assesment}/>
+    </div>
+
+    </div>
   )
 }
 

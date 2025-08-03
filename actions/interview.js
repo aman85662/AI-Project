@@ -117,3 +117,32 @@ export async function saveQuizResult(question, answers, score) {
         throw new Error("Failed to save quiz result");
     }
 }
+
+
+export async function getAssesments() {
+       const { userId } = await auth()
+    if (!userId) {
+        throw new Error("User not authenticated");
+    }
+
+    const user = await db.user.findUnique({
+        where: { clerkUserId: userId, },
+    });
+
+    if (!user) throw new Error("User not found");
+
+    try {
+        const assesments = await db.assessment.findMany({
+            where: {
+                userID:user.id,
+            },
+            orderBy: {
+                createdAt:"asc",
+            }
+        })
+        return assesments;
+    } catch (error) {
+        console.error("Error fetching assesment:", error);
+        throw new Error("Failed to fetch assesments")
+    }
+}
