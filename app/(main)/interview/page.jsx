@@ -13,7 +13,7 @@ import QuizList from "./_components/quiz-list";
       </h1>
 
 
-      <div>
+      <div className="space-y-4">
          <Statscards assesments={assesment} />
          <PerformanceChart assesments={assesment} />
            <QuizList assesments = {assesment}/>
