@@ -50,7 +50,7 @@ export async function getResume() {
     });
 }
 
-export async function improveAIWithme() {
+export async function improveWithAI() {
       const { userId } = await auth()
              if(!userId) {
                  throw new Error("User not authenticated");
