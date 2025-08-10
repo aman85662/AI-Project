@@ -5,7 +5,7 @@ const StatsCards = ({ assesments }) => {
     const getAverageScore = () => {
         if (!assesments?.length) return 0;
         const total = assesments.reduce(
-            (sum, assesments) => sum + assesment.quizscore, 0
+            (sum, assesments) => sum + assesments.quizscore, 0
         );
         return (total / assesments.length).toFixed(1);
     };
@@ -55,7 +55,7 @@ const StatsCards = ({ assesments }) => {
             <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{getLatestAssesment()?.quizscore.toFixed(1) || 0}%</div>
+            <div className="text-2xl font-bold">{getLatestAssesment()?.quizScore.toFixed(1) || 0}%</div>
             <p className="text-muted-foreground text-xs">
              Most Recent Quiz
             </p>

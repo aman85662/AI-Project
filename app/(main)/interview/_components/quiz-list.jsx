@@ -1,10 +1,11 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Card,CardContent,CardHeader,CardTitle } from '@/components/ui/card';
+import { Card,CardContent,CardHeader,CardTitle,CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import QuizResult from './quiz-result';
+import { format } from "date-fns";
 
 const QuizList = ({assesments}) => {
  
@@ -39,7 +40,6 @@ const QuizList = ({assesments}) => {
                         )}
                       </div>
     </CardDescription>
-    <CardAction>Card Action</CardAction>
   </CardHeader>
   <CardContent>
                     <p className='text-sm text-muted-foreground'>{ assesments.improvementTip}</p>

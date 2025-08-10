@@ -3,55 +3,54 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardAction } from "@/components/ui/card";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-const PerformanceChart = ({assesments}) => {
-  
-  const [chartData, setChartData] = useState({});
+const PerformanceChart = ({ assesments }) => {
+  // Initialize chartData as an empty array
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => { 
     if (assesments) {
-      const formattedData = assesments.map((assesments) => ({
-        date: format(new Date(assesments.createdAt), "MMM dd"),
-        score: assesments.quizScore,
+      const formattedData = assesments.map((assesment) => ({
+        date: format(new Date(assesment.createdAt), "MMM dd"),
+        score: assesment.quizScore,
       }));
       setChartData(formattedData);
     }
-  },[assesments])
-  
+  }, [assesments]);
   
   return (
- <Card>
-  <CardHeader>
-    <CardTitle className="gradient-title text-3xl md:text-4xl">Performance Trend</CardTitle>
-    <CardDescription>Your Quiz Performance Over Time</CardDescription>
-    <CardAction>Card Action</CardAction>
-  </CardHeader>
-  <CardContent>
+    <Card>
+      <CardHeader>
+        <CardTitle className="gradient-title text-3xl md:text-4xl">Performance Trend</CardTitle>
+        <CardDescription>Your Quiz Performance Over Time</CardDescription>
+        <CardAction>Card Action</CardAction>
+      </CardHeader>
+      <CardContent>
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
-      <LineChart
-        data={chartData}
-        
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis  domain={[0, 100]}/>
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis domain={[0, 100]} />
               <Tooltip content={({ active, payload }) => {
-                if (active && payload?.length) {
-                  <div className="bg-background border  rounded-lg p-2 shadow-md">
-                    <p className="text-sm font-medium">Score: {payload[0].value}</p>
-                    <p className="text-xs text-muted-foreground">{ payload[0].payload.date}</p>
-                  </div>
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="bg-background border rounded-lg p-2 shadow-md">
+                      <p className="text-sm font-medium">Score: {payload[0].value}</p>
+                      <p className="text-xs text-muted-foreground">{payload[0].payload.date}</p>
+                    </div>
+                  );
                 }
-        }}/>
-        <Line type="monotone" dataKey="score" stroke="#8884d8" strokeWidth={2} />
-      </LineChart>
-    </ResponsiveContainer>
-   </div>
-  </CardContent>
-</Card>
-  )
-}
+                return null;
+              }} />
+              <Line type="monotone" dataKey="score" stroke="#8884d8" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
-export default PerformanceChart
+export default PerformanceChart;

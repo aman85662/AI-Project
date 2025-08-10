@@ -104,7 +104,7 @@ export async function saveQuizResult(question, answers, score) {
         const assesment = await db.assessment.create({
             data: {
                 userId: user.id,
-                quizscore: score,
+                quizScore: score, // note the capital "S"
                 questions: questionResults,
                 category:"technical",
                 improvementTip,
@@ -134,12 +134,13 @@ export async function getAssesments() {
     try {
         const assesments = await db.assessment.findMany({
             where: {
-                userID:user.id,
+                userId: user.id,
             },
             orderBy: {
                 createdAt:"asc",
             }
-        })
+        });
+
         return assesments;
     } catch (error) {
         console.error("Error fetching assesment:", error);
