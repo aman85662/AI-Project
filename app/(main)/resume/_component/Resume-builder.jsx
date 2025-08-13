@@ -19,12 +19,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { saveResume } from "@/actions/resume";
-import { EntryForm } from "./entry-form";
+import  EntryForm  from "./entry-form";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
 import { entriesToMarkdown } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
-import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 
 function ResumeBuilder({ initialContent }) {
   const [activeTab, setActiveTab] = useState("edit");
@@ -119,24 +118,27 @@ function ResumeBuilder({ initialContent }) {
       .join("\n\n");
   };
 
-  const generatePDF = async () => {
-    setIsGenerating(true);
-    try {
-      const element = document.getElementById("resume-pdf");
-      const opt = {
-        margin: [15, 15],
-        filename: "resume.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      };
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error("PDF generation error:", error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+const generatePDF = async () => {
+  setIsGenerating(true);
+  try {
+    const html2pdf = (await import("html2pdf.js")).default; // dynamically import only on client
+
+    const element = document.getElementById("resume-pdf");
+    const opt = {
+      margin: [15, 15],
+      filename: "resume.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    };
+    await html2pdf().set(opt).from(element).save();
+  } catch (error) {
+    console.error("PDF generation error:", error);
+  } finally {
+    setIsGenerating(false);
+  }
+};
+
 
   const onSubmit = async (data) => {
     try {

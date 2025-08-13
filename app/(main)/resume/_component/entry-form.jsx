@@ -20,7 +20,7 @@ const formatDisplayDate = (dateString) => {
   return format(date, "MMM yyyy")
 }
 
-const EntryForm = ({ type, entries, onChange }) => {
+const  EntryForm = ({ type, entries, onChange }) => {
   const [isAdding, setIsAdding] = useState(false)
 
   const {
